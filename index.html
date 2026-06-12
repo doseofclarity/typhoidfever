@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Typhoid Fever – Comprehensive PHN Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        .transition-all { transition: all 0.3s ease; }
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .group:hover .group-hover\:rotate-y-180 { transform: rotateY(180deg); }
+
+        .recall-mode .reveal-text {
+            background-color: #cbd5e1;
+            color: transparent;
+            border-radius: 0.375rem;
+            padding: 0 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            box-shadow: inset 0 0 0 1px #94a3b8;
+        }
+        .recall-mode .reveal-text:hover,
+        .recall-mode .reveal-text.revealed {
+            background-color: #fde047;
+            color: #1e293b;
+            box-shadow: none;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 8px; }
+        .content-section { animation: fade 0.3s ease; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .locked-section { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+        .quiz-feedback-correct { background-color: #dcfce7; border-left: 4px solid #22c55e; }
+        .quiz-feedback-wrong { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { typhoid: { light: '#ccfbf1', DEFAULT: '#0d9488', dark: '#0f5e53' } } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 h-screen flex flex-col md:flex-row font-sans text-slate-800 overflow-hidden">
+
+    <!-- Mobile Header with burger on LEFT -->
+    <div class="md:hidden bg-typhoid-dark text-white p-4 flex justify-between items-center shadow-md z-30 shrink-0">
+        <button onclick="toggleMobileMenu()" class="text-white focus:outline-none z-40">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
+        <h1 class="font-bold text-lg absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
+            <i class="fa-solid fa-temperature-high mr-2 text-typhoid-light"></i> Typhoid Fever
+        </h1>
+        <div class="w-8"></div>
+    </div>
+
+    <nav id="sidebar" class="hidden md:flex flex-col w-full md:w-80 bg-white shadow-2xl h-full absolute md:relative z-30 transition-transform duration-300 shrink-0 border-r border-slate-200">
+        <div class="p-6 bg-gradient-to-br from-typhoid-dark to-typhoid text-white hidden md:block shrink-0">
+            <h1 class="font-black text-2xl tracking-wide"><i class="fa-solid fa-temperature-high text-typhoid-light mr-2"></i> Typhoid Fever</h1>
+            <p class="text-sm text-teal-100 mt-1 font-medium">Enteric Fever · PHN Review</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 text-sm font-medium">
+                <li><button onclick="showSection('home')" id="btn-home" class="nav-btn w-full text-left px-6 py-3 bg-typhoid-light text-typhoid-dark border-r-4 border-typhoid-dark transition-colors"><i class="fa-solid fa-house w-6 nav-icon"></i><i class="fa-solid fa-lock w-6 hidden text-slate-400"></i> Home / Start</button></li>
+                <li><button onclick="showSection('overview')" id="btn-overview" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-biohazard w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Epidemiology & Overview</button></li>
+                <li><button onclick="showSection('clinical')" id="btn-clinical" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-stethoscope w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Clinical Features & Diagnosis</button></li>
+                <li><button onclick="showSection('transmission')" id="btn-transmission" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-hand-holding-medical w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Transmission & Carriers</button></li>
+                <li><button onclick="showSection('prevention')" id="btn-prevention" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-syringe w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Prevention & Vaccination</button></li>
+                <li><button onclick="showSection('treatment')" id="btn-treatment" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-capsules w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Treatment & Complications</button></li>
+                <li><button onclick="showSection('phn')" id="btn-phn" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-user-nurse w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> PHN Role & Nursing Care</button></li>
+                <li><button onclick="showSection('mnemonics')" id="btn-mnemonics" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-200 mt-2 locked-section"><i class="fa-solid fa-brain w-6 text-typhoid nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Mnemonic Appendix</button></li>
+                <li><button onclick="showSection('final_quiz_sec')" id="btn-final_quiz_sec" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-graduation-cap w-6 text-amber-500 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Final 50‑Item Exam</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="flex-1 h-full overflow-y-auto bg-slate-100 relative w-full">
+        <div class="fixed top-16 md:top-4 right-4 md:right-8 z-40 flex items-center bg-white/90 backdrop-blur px-4 py-3 rounded-full shadow-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors" onclick="toggleRecallMode()">
+            <span class="mr-3 text-sm font-bold text-slate-700 hidden md:inline"><i class="fa-solid fa-brain text-typhoid mr-1"></i> Active Recall</span>
+            <span class="mr-3 text-sm font-bold text-slate-700 md:hidden"><i class="fa-solid fa-brain text-typhoid"></i></span>
+            <button id="recall-toggle" class="w-12 h-6 bg-slate-300 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner pointer-events-none">
+                <div id="recall-knob" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-300 shadow"></div>
+            </button>
+        </div>
+
+        <div class="p-4 md:p-8 max-w-6xl mx-auto pb-32">
+
+            <!-- HOME SECTION -->
+            <section id="home" class="content-section flex flex-col items-center justify-center min-h-[80vh] text-center block">
+                <div class="bg-gradient-to-br from-slate-800 to-typhoid-dark text-white rounded-3xl shadow-2xl p-10 md:p-16 w-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 text-white opacity-5 pointer-events-none"><i class="fa-solid fa-disease text-[20rem]"></i></div>
+                    <div class="relative z-10">
+                        <div class="bg-white/10 backdrop-blur-sm inline-block p-4 rounded-full text-typhoid-light mb-6 shadow-sm border border-white/20">
+                            <i class="fa-solid fa-temperature-high text-5xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-teal-200 mb-2 uppercase tracking-widest">Communicable Disease Review</h3>
+                        <h1 class="text-4xl md:text-6xl font-black text-white mb-6 leading-tight drop-shadow-md">Typhoid Fever<br>(Enteric Fever)</h1>
+                        <div class="bg-white/10 backdrop-blur inline-block px-6 py-3 rounded-full mb-10 border border-white/20">
+                            <p class="text-lg text-white font-medium">"Fecal‑oral transmission – prolonged fever, relative bradycardia, rose spots."</p>
+                        </div>
+                        <button onclick="unlockFirstSection()" class="bg-teal-600 hover:bg-teal-500 text-white font-black py-4 px-10 rounded-full shadow-xl transition-transform hover:scale-105 text-lg flex items-center mx-auto focus:outline-none">
+                            Begin Lecture <i class="fa-solid fa-arrow-right ml-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 1: Epidemiology & Overview -->
+            <section id="overview" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-biohazard text-typhoid mr-4"></i> Epidemiology & Overview</h2>
+                    <div class="bg-teal-50 border-l-4 border-typhoid p-4 mb-6 rounded-r shadow-sm">
+                        <p><strong class="text-typhoid-dark">Typhoid fever</strong> – acute systemic infection caused by <span class="reveal-text font-bold">Salmonella enterica serovar Typhi (Salmonella typhi)</span>.</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-lg mb-3"><i class="fa-solid fa-chart-line text-typhoid mr-2"></i> Public Health Significance</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-sm">
+                                <li>Endemic in the Philippines; outbreaks occur with unsafe water/food.</li>
+                                <li>Incubation period: <span class="reveal-text">1‑3 weeks (average 2 weeks)</span>.</li>
+                                <li>Case fatality rate without treatment: ~10%; with antibiotics &lt;1%.</li>
+                                <li>Chronic carriers (especially gallbladder) – major reservoir.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-lg mb-3"><i class="fa-solid fa-virus mr-2 text-typhoid"></i> Agent & Reservoir</h3>
+                            <p><strong>Etiologic agent:</strong> <em>Salmonella Typhi</em> (gram‑negative rod).</p>
+                            <p><strong>Reservoir:</strong> <span class="reveal-text">Humans only</span> – patients and chronic carriers (especially women, elderly, gallstone patients).</p>
+                            <p><strong>Infectious dose:</strong> high (10⁵‑10⁹ organisms).</p>
+                        </div>
+                    </div>
+                    <button onclick="openQuiz('overview')" class="mt-8 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors flex items-center justify-center text-lg"><i class="fa-solid fa-list-check mr-3 text-2xl text-typhoid"></i> Take Quiz to Unlock Next Section</button>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Clinical Features & Diagnosis -->
+            <section id="clinical" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-stethoscope text-typhoid mr-4"></i> Clinical Features & Diagnosis</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-red-50 p-5 rounded-xl border border-red-200">
+                            <h3 class="font-bold text-lg text-red-800 mb-2">Signs & Symptoms</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li><strong>Step‑ladder fever</strong> (slowly rising, then sustained high fever).</li>
+                                <li><strong>Relative bradycardia</strong> (pulse is slow relative to temperature).</li>
+                                <li>Headache, malaise, anorexia, abdominal pain.</li>
+                                <li><strong>Rose spots</strong> – faint, salmon‑colored maculopapular rash on trunk (in 30% of light‑skinned patients).</li>
+                                <li>Constipation early, diarrhea later (pea‑soup stools).</li>
+                                <li>Hepatosplenomegaly.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                            <h3 class="font-bold text-lg">Diagnosis</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li><strong>Blood culture</strong> – gold standard (positive in first week).</li>
+                                <li>Stool culture – positive after first week.</li>
+                                <li>Bone marrow culture – most sensitive.</li>
+                                <li><strong>Widal test</strong> – detects antibodies (O and H antigens); limited specificity.</li>
+                                <li>PCR (research).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button onclick="openQuiz('clinical')" class="mt-8 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors flex items-center justify-center text-lg"><i class="fa-solid fa-list-check mr-3 text-2xl text-typhoid"></i> Take Quiz to Unlock Next Section</button>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Transmission & Carriers -->
+            <section id="transmission" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-hand-holding-medical text-typhoid mr-4"></i> Transmission & Carriers</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-red-50 p-5 rounded-xl border border-red-200">
+                            <h3 class="font-bold text-lg text-red-800 mb-2"><i class="fa-solid fa-people-arrows"></i> Mode of Transmission</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Fecal‑oral route (contaminated water, food, or hands).</li>
+                                <li>Flies can mechanically transmit bacteria.</li>
+                                <li>Ingestion of raw shellfish from sewage‑contaminated waters.</li>
+                                <li>Direct contact with infected person or carrier.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 p-5 rounded-xl border border-amber-200">
+                            <h3 class="font-bold text-lg">Chronic Carrier State</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Defined as excretion of Salmonella Typhi for >1 year.</li>
+                                <li>More common in <span class="reveal-text">women, elderly, and patients with gallstones</span>.</li>
+                                <li>Gallbladder is the primary reservoir.</li>
+                                <li>Carriers are asymptomatic but infectious.</li>
+                                <li>Famous example: "Typhoid Mary" (Mary Mallon).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button onclick="openQuiz('transmission')" class="mt-8 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors flex items-center justify-center text-lg"><i class="fa-solid fa-list-check mr-3 text-2xl text-typhoid"></i> Take Quiz to Unlock Next Section</button>
+                </div>
+            </section>
+
+            <!-- SECTION 4: Prevention & Vaccination -->
+            <section id="prevention" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-syringe text-typhoid mr-4"></i> Prevention & Vaccination</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-green-50 p-5 rounded-xl border border-green-200">
+                            <h3 class="font-bold text-lg"><i class="fa-solid fa-shield-heart"></i> Environmental & Personal</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li>Safe drinking water (chlorination, boiling).</li>
+                                <li>Proper sewage disposal and sanitation.</li>
+                                <li>Handwashing before eating and after toilet.</li>
+                                <li>Food safety: cook thoroughly, avoid raw shellfish, wash vegetables.</li>
+                                <li>Fly control.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-5 rounded-xl border border-blue-200">
+                            <h3 class="font-bold text-lg">Vaccines Available</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-sm">
+                                <li><strong>Typhoid conjugate vaccine (TCV)</strong> – single dose, recommended for children >6 months.</li>
+                                <li>Vi polysaccharide vaccine (IM) – for adults and children >2 years.</li>
+                                <li>Oral live attenuated Ty21a vaccine (capsules) – for adults/children >6 years.</li>
+                                <li>Not 100% effective; still need hygiene.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button onclick="openQuiz('prevention')" class="mt-8 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors flex items-center justify-center text-lg"><i class="fa-solid fa-list-check mr-3 text-2xl text-typhoid"></i> Take Quiz to Unlock Next Section</button>
+                </div>
+            </section>
+
+            <!-- SECTION 5: Treatment & Complications -->
+            <section id="treatment" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-capsules text-typhoid mr-4"></i> Treatment & Complications</h2>
+                    <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 mb-6">
+                        <h3 class="font-bold text-lg">Antibiotic Therapy</h3>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            <li>First‑line: <span class="reveal-text">Ceftriaxone</span> (IV/IM) or <span class="reveal-text">Azithromycin</span> (oral).</li>
+                            <li>Fluoroquinolones (ciprofloxacin) – high resistance; use only if sensitive.</li>
+                            <li>Chloramphenicol – older drug; resistance common.</li>
+                            <li>Duration: 7‑14 days.</li>
+                            <li>Carrier state: treat with amoxicillin or ciprofloxacin for 4‑6 weeks; cholecystectomy if gallstones present.</li>
+                        </ul>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-4 rounded-xl">
+                            <h3 class="font-bold">Complications</h3>
+                            <ul class="list-disc pl-5 text-sm">
+                                <li>Intestinal hemorrhage</li>
+                                <li>Intestinal perforation (peritonitis – surgical emergency)</li>
+                                <li>Toxic myocarditis</li>
+                                <li>Encephalopathy</li>
+                                <li>Relapse (5‑10%)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-typhoid-light p-4 rounded-xl">
+                            <h3 class="font-bold">Prognosis</h3>
+                            <ul class="list-disc pl-5 text-sm">
+                                <li>Excellent with prompt antibiotics.</li>
+                                <li>Perforation increases mortality.</li>
+                                <li>Chronic carrier state may persist despite treatment.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button onclick="openQuiz('treatment')" class="mt-8 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors flex items-center justify-center text-lg"><i class="fa-solid fa-list-check mr-3 text-2xl text-typhoid"></i> Take Quiz to Unlock Next Section</button>
+                </div>
+            </section>
+
+            <!-- SECTION 6: PHN Role & Nursing Care -->
+            <section id="phn" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-user-nurse text-typhoid mr-4"></i> PHN Role & Nursing Care</h2>
+                    <ul class="list-disc pl-5 space-y-3 text-slate-700">
+                        <li><strong>Case reporting:</strong> Typhoid fever is a notifiable disease (under NESSS laboratory‑diagnosed).</li>
+                        <li><strong>Health education:</strong> Promote handwashing, safe water (boil/chlorinate), proper food handling.</li>
+                        <li><strong>Isolation:</strong> Enteric precautions for hospitalized patients (hand hygiene, disposal of feces/urine).</li>
+                        <li><strong>Contact tracing:</strong> Identify household contacts; educate on symptoms and hygiene.</li>
+                        <li><strong>Carrier detection:</strong> For food handlers, health workers, and household members of cases – stool culture after recovery.</li>
+                        <li><strong>Nursing care:</strong> Monitor vital signs (watch for relative bradycardia, signs of perforation/bleeding).</li>
+                        <li><strong>Fluid and nutrition:</strong> Encourage oral fluids; if severe, IV hydration.</li>
+                        <li><strong>Immunization promotion:</strong> Typhoid vaccine for high‑risk groups and travelers.</li>
+                    </ul>
+                    <div class="bg-indigo-50 mt-6 p-4 rounded-xl border border-indigo-200">
+                        <p class="font-bold"><i class="fa-regular fa-hospital"></i> Related DOH Programs:</p>
+                        <p>Environmental Health & Sanitation · Food Safety Program · Expanded Program on Immunization (typhoid conjugate vaccine)</p>
+                    </div>
+                    <button onclick="openQuiz('phn')" class="mt-8 w-full bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors flex items-center justify-center text-lg"><i class="fa-solid fa-list-check mr-3 text-2xl text-typhoid"></i> Take Quiz to Unlock Next Section</button>
+                </div>
+            </section>
+
+            <!-- SECTION 7: Mnemonic Appendix -->
+            <section id="mnemonics" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-6 border-b-2 border-typhoid pb-3"><i class="fa-solid fa-brain text-typhoid mr-4"></i> Mnemonic Appendix</h2>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                        <table class="w-full text-left text-sm md:text-base">
+                            <thead class="bg-slate-800 text-white"><tr><th class="p-3">Topic</th><th class="p-3">Mnemonic</th><th class="p-3">Meaning</th></tr></thead>
+                            <tbody class="divide-y bg-white">
+                                <tr><td class="p-3 font-semibold">Classic triad (signs)</td><td class="font-black text-typhoid">F.R.R. (Fever, Relative bradycardia, Rose spots)</td><td class="reveal-text">Step‑ladder fever, pulse‑temperature dissociation, salmon‑colored rash</tr>
+                                <tr class="bg-slate-50"><td class="p-3 font-semibold">Typhoid carrier risk factors</td><td class="font-black text-typhoid">W.E.G. (Women, Elderly, Gallstones)</td><td class="reveal-text">Chronic carrier state more common in these groups</tr>
+                                <tr><td class="p-3 font-semibold">Transmission vehicles</td><td class="font-black text-typhoid">Water, Food, Flies, Fingers</td><td class="reveal-text">4 F’s: contaminated water, food, flies, fingers (fecal‑oral)</tr>
+                                <tr class="bg-slate-50"><td class="p-3 font-semibold">First‑line antibiotics</td><td class="font-black text-typhoid">C.A. (Ceftriaxone, Azithromycin)</td><td class="reveal-text">Ceftriaxone IV/IM or oral azithromycin</tr>
+                                <tr><td class="p-3 font-semibold">Complications</td><td class="font-black text-typhoid">B.I.P. (Bleeding, Intestinal perforation, Psychosis/encephalopathy)</td><td class="reveal-text">Life‑threatening complications of severe typhoid</tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button onclick="openQuiz('final_quiz')" class="mt-8 w-full bg-amber-500 text-slate-900 font-black py-4 rounded-xl shadow-md hover:bg-amber-400 transition-colors text-lg"><i class="fa-solid fa-graduation-cap mr-3"></i> Take Final 50‑Item Exam</button>
+                </div>
+            </section>
+
+            <!-- FINAL QUIZ SECTION -->
+            <section id="final_quiz_sec" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 text-center min-h-[60vh] flex flex-col justify-center items-center">
+                    <i class="fa-solid fa-graduation-cap text-8xl text-amber-400 mb-6"></i>
+                    <h2 class="text-4xl font-black text-slate-800 mb-4">Final Comprehensive Exam</h2>
+                    <p class="text-lg text-slate-600 mb-8 max-w-2xl">You have completed all modules. Test your mastery of Typhoid Fever – 50 items, need 75% to pass.</p>
+                    <button onclick="openQuiz('final_quiz')" class="w-full max-w-md bg-slate-800 text-white font-black py-4 rounded-xl shadow-md hover:bg-slate-900 transition-colors text-xl">Start Final Exam</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeQuiz()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h2 id="quiz-title" class="text-3xl font-black text-slate-800 mb-2"></h2>
+            <p class="text-slate-600 mb-6 font-medium border-b border-slate-200 pb-4">Score at least <span class="font-bold text-typhoid">75%</span> to unlock next section.</p>
+            <div id="quiz-questions-container" class="space-y-4"></div>
+            <button id="quiz-submit-btn" onclick="submitQuiz()" class="mt-8 w-full bg-typhoid text-white font-bold py-4 rounded-xl hover:bg-typhoid-dark transition-colors shadow-lg text-lg">Submit Answers</button>
+            <div id="quiz-result-container" class="hidden mt-6 p-4 rounded-xl bg-slate-100 border border-slate-200"></div>
+        </div>
+    </div>
+
+    <script>
+        let unlockedSections = ['home'];
+        const quizzes = {
+            overview: { title: 'Epidemiology & Overview', next: 'clinical', questions: [
+                { q: "What is the causative agent of typhoid fever?", options: ["Salmonella enteritidis", "Salmonella typhi", "Salmonella typhimurium", "Shigella dysenteriae"], ans: 1 },
+                { q: "The average incubation period is:", options: ["1-3 days", "1-3 weeks (average 2 weeks)", "4-6 weeks", "1-2 days"], ans: 1 },
+                { q: "Which of the following is the only reservoir for Salmonella Typhi?", options: ["Animals", "Humans", "Water", "Flies"], ans: 1 },
+                { q: "Case fatality rate without treatment is approximately:", options: ["<1%", "5%", "10%", "25%"], ans: 2 },
+                { q: "Chronic carriers excrete the bacteria for more than:", options: ["3 months", "6 months", "1 year", "2 years"], ans: 2 },
+                { q: "Which group is at higher risk of becoming a chronic carrier?", options: ["Young men", "Children", "Women with gallstones", "Pregnant women"], ans: 2 },
+                { q: "The infectious dose of Salmonella Typhi is:", options: ["Very low (10-100)", "High (10⁵-10⁹ organisms)", "Medium (1000)", "Variable"], ans: 1 },
+                { q: "Typhoid fever is endemic in the Philippines. This means:", options: ["Only occurs in outbreaks", "Constant presence in the population", "Eradicated", "Imported only"], ans: 1 },
+                { q: "The bacteria is transmitted via the:", options: ["Respiratory route", "Fecal-oral route", "Sexual contact", "Mosquito bite"], ans: 1 },
+                { q: "Which age group is most commonly affected in endemic areas?", options: ["Infants", "Children and young adults", "Elderly", "Pregnant women"], ans: 1 }
+            ] },
+            clinical: { title: 'Clinical Features & Diagnosis', next: 'transmission', questions: [
+                { q: "The characteristic fever pattern of typhoid is:", options: ["Intermittent high fever", "Step‑ladder fever (slowly rising)", "Remittent fever", "Pel‑Ebstein fever"], ans: 1 },
+                { q: "Relative bradycardia refers to:", options: ["Fast pulse with fever", "Pulse is slow relative to temperature", "Irregular pulse", "Absent pulse"], ans: 1 },
+                { q: "Rose spots in typhoid are described as:", options: ["Purpuric rash", "Salmon‑colored maculopapular rash on trunk", "Vesicular rash", "Urticaria"], ans: 1 },
+                { q: "Which specimen is most sensitive for culture during the first week?", options: ["Stool", "Urine", "Blood", "Bone marrow"], ans: 2 },
+                { q: "The Widal test detects antibodies against:", options: ["Lipopolysaccharide (O) and flagellar (H) antigens", "Vi antigen only", "Exotoxin", "Capsular polysaccharide"], ans: 0 },
+                { q: "Constipation is more common than diarrhea in the:", options: ["First week", "Second week", "Third week", "Convalescent phase"], ans: 0 },
+                { q: "Hepatosplenomegaly in typhoid is due to:", options: ["Bacterial invasion of liver/spleen", "RE hyperplasia", "Abscess formation", "Portal hypertension"], ans: 1 },
+                { q: "Gold standard for diagnosis is:", options: ["Widal test", "Blood culture", "Stool culture", "PCR"], ans: 1 },
+                { q: "Rose spots appear most commonly on the:", options: ["Face", "Trunk and abdomen", "Extremities", "Palms and soles"], ans: 1 },
+                { q: "In the second week, the best specimen for culture is:", options: ["Blood", "Stool and urine", "Bone marrow", "Sputum"], ans: 1 }
+            ] },
+            transmission: { title: 'Transmission & Carriers', next: 'prevention', questions: [
+                { q: "The classic '4 F's' of typhoid transmission include all EXCEPT:", options: ["Flies", "Fingers", "Food", "Fomites"], ans: 3 },
+                { q: "A chronic carrier is defined as someone who excretes Salmonella Typhi for >:", options: ["3 months", "6 months", "1 year", "2 years"], ans: 2 },
+                { q: "The most famous asymptomatic carrier in history was:", options: ["Typhoid Mary (Mary Mallon)", "John Snow", "Robert Koch", "Louis Pasteur"], ans: 0 },
+                { q: "Flies transmit typhoid by:", options: ["Biting", "Mechanically carrying bacteria from feces to food", "Injecting toxins", "Laying eggs"], ans: 1 },
+                { q: "The primary site of chronic carriage is the:", options: ["Kidney", "Gallbladder", "Intestine", "Liver"], ans: 1 },
+                { q: "Which food item is a common vehicle in outbreaks?", options: ["Raw shellfish from sewage‑contaminated water", "Boiled rice", "Fruits", "Canned goods"], ans: 0 },
+                { q: "Direct person‑to‑person transmission occurs via:", options: ["Droplets", "Fecal‑oral (contaminated hands)", "Blood", "Sexual contact"], ans: 1 },
+                { q: "Carriers are often asymptomatic but:", options: ["Not infectious", "Infectious if they shed bacteria in feces", "Only infectious during acute illness", "Require isolation"], ans: 1 },
+                { q: "Which of the following increases the risk of becoming a carrier?", options: ["Male gender", "Cholelithiasis (gallstones)", "Young age", "Immunocompetence"], ans: 1 },
+                { q: "To detect carriers, public health authorities screen:", options: ["Food handlers and household contacts", "All hospital patients", "Tourists", "Children only"], ans: 0 }
+            ] },
+            prevention: { title: 'Prevention & Vaccination', next: 'treatment', questions: [
+                { q: "The most effective long‑term preventive measure is:", options: ["Vaccination", "Safe water and sanitation", "Antibiotic prophylaxis", "Isolation of cases"], ans: 1 },
+                { q: "Which typhoid vaccine is recommended for infants from 6 months of age?", options: ["Vi polysaccharide", "Oral Ty21a", "Typhoid conjugate vaccine (TCV)", "None"], ans: 2 },
+                { q: "Boiling water for how many minutes kills Salmonella Typhi?", options: ["1 minute", "5 minutes", "10 minutes", "30 minutes"], ans: 0 },
+                { q: "Handwashing before eating prevents transmission by:", options: ["Killing bacteria on hands", "Removing bacteria from hands", "Neutralizing toxins", "All of the above"], ans: 1 },
+                { q: "Which vaccine is given orally?", options: ["Vi polysaccharide", "Ty21a (live attenuated)", "TCV", "None"], ans: 1 },
+                { q: "Food handlers should be advised to:", options: ["Wash hands after toilet", "Not prepare food if ill or carrier", "Cook food thoroughly", "All of the above"], ans: 3 },
+                { q: "Chlorination of water is effective against:", options: ["Salmonella Typhi", "All viruses", "Some parasites", "None"], ans: 0 },
+                { q: "Typhoid vaccine is recommended for:", options: ["Travelers to endemic areas", "Household contacts of carriers", "Laboratory workers", "All of the above"], ans: 3 },
+                { q: "To prevent fly transmission, community should:", options: ["Cover food", "Proper garbage disposal", "Screens on windows", "All of the above"], ans: 3 },
+                { q: "Which of the following is NOT an effective preventive measure?", options: ["Drinking untreated surface water", "Sanitary sewage disposal", "Health education", "Vaccination"], ans: 0 }
+            ] },
+            treatment: { title: 'Treatment & Complications', next: 'phn', questions: [
+                { q: "First‑line antibiotic for uncomplicated typhoid in the Philippines is:", options: ["Ciprofloxacin", "Ceftriaxone or Azithromycin", "Chloramphenicol", "Amoxicillin"], ans: 1 },
+                { q: "A major complication requiring emergency surgery is:", options: ["Intestinal hemorrhage", "Intestinal perforation", "Relapse", "Myocarditis"], ans: 1 },
+                { q: "Chronic carriers are treated with:", options: ["Short course of antibiotics (3 days)", "Prolonged antibiotics (4-6 weeks) ± cholecystectomy", "No treatment", "Vaccination"], ans: 1 },
+                { q: "Which drug is avoided due to high resistance?", options: ["Ceftriaxone", "Azithromycin", "Ciprofloxacin (in many areas)", "Chloramphenicol"], ans: 2 },
+                { q: "Relapse occurs in approximately what percentage of treated patients?", options: ["<1%", "5-10%", "20-30%", "50%"], ans: 1 },
+                { q: "Intestinal perforation presents with:", options: ["Sudden severe abdominal pain, rigidity, rebound tenderness", "Melena", "Hematemesis", "Constipation"], ans: 0 },
+                { q: "IV fluid therapy is crucial to prevent:", options: ["Dehydration and shock", "Relapse", "Carrier state", "Rose spots"], ans: 0 },
+                { q: "Which antibiotic is used for severe typhoid in hospitalized patients?", options: ["Oral amoxicillin", "IV ceftriaxone", "Oral ciprofloxacin", "Doxycycline"], ans: 1 },
+                { q: "Complications of intestinal hemorrhage may require:", options: ["Blood transfusion", "Surgery", "IV antibiotics", "All of the above"], ans: 3 },
+                { q: "After clinical recovery, stool cultures are recommended to:", options: ["Detect carriers", "Confirm cure", "Rule out relapse", "All of the above"], ans: 3 }
+            ] },
+            phn: { title: 'PHN Role & Nursing Care', next: 'mnemonics', questions: [
+                { q: "The first action when a typhoid case is confirmed is:", options: ["Isolate patient", "Report to health officer and start contact tracing", "Start antibiotics", "Vaccinate family"], ans: 1 },
+                { q: "Food handlers who are chronic carriers should be:", options: ["Fired", "Treated and excluded from food handling until negative cultures", "Allowed to work with gloves", "Ignored"], ans: 1 },
+                { q: "Which of the following is a key health education message?", options: ["Boil drinking water", "Wash hands after toilet", "Cook food thoroughly", "All of the above"], ans: 3 },
+                { q: "Typhoid is a notifiable disease under:", options: ["FHSIS", "NESSS (laboratory‑diagnosed)", "PhilHealth", "DepEd"], ans: 1 },
+                { q: "During an outbreak, the PHN should prioritize:", options: ["Mass vaccination", "Safe water supply and sanitation", "Quarantine", "Mass antibiotic prophylaxis"], ans: 1 },
+                { q: "The PHN should educate families of cases on:", options: ["Proper disposal of feces (disinfection with bleach)", "Handwashing", "Separate utensils", "All of the above"], ans: 3 },
+                { q: "Which of the following is NOT a nursing responsibility?", options: ["Administering IV ceftriaxone (under physician order)", "Prescribing antibiotics without doctor", "Health education", "Contact tracing"], ans: 1 },
+                { q: "A patient with abdominal pain and fever should be monitored for:", options: ["Signs of perforation (rigid abdomen, tachycardia, hypotension)", "Rose spots", "Relative bradycardia", "All of the above"], ans: 3 },
+                { q: "To prevent secondary cases, the nurse should advise contacts to:", options: ["Seek medical care if fever develops", "Practice strict hand hygiene", "Avoid preparing food for others", "All of the above"], ans: 3 },
+                { q: "Typhoid vaccine is recommended for:", options: ["All children at 12 months (TCV)", "Travelers", "Household contacts of carriers", "All of the above"], ans: 3 }
+            ] }
+        };
+
+        // Build final quiz (50 items)
+        let finalQ = [];
+        for (let sec of ['overview','clinical','transmission','prevention','treatment','phn']) {
+            finalQ = finalQ.concat(quizzes[sec].questions.slice(0,7));
+        }
+        while(finalQ.length < 50) finalQ.push({ q: "What is the first-line oral antibiotic for uncomplicated typhoid fever?", options: ["Ciprofloxacin", "Azithromycin", "Doxycycline", "Amoxicillin"], ans: 1 });
+        quizzes['final_quiz'] = { title: 'Final 50‑Item Exam', next: null, questions: finalQ };
+
+        function unlockFirstSection() { if(!unlockedSections.includes('overview')) { unlockedSections.push('overview'); updateSidebarUI(); } showSection('overview'); }
+        function showSection(sectionId) {
+            if (!unlockedSections.includes(sectionId) && sectionId !== 'home') { alert("Please pass the Active Recall Quiz at the bottom of the previous section to unlock this content."); return; }
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId)?.classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => { btn.classList.remove('bg-typhoid-light','text-typhoid-dark','border-r-4','border-typhoid-dark'); btn.classList.add('text-slate-600'); });
+            const activeBtn = document.getElementById('btn-'+sectionId);
+            if(activeBtn) { activeBtn.classList.remove('text-slate-600'); activeBtn.classList.add('bg-typhoid-light','text-typhoid-dark','border-r-4','border-typhoid-dark'); }
+            if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
+            document.querySelector('main').scrollTop = 0;
+        }
+        function updateSidebarUI() {
+            const sections = ['home','overview','clinical','transmission','prevention','treatment','phn','mnemonics','final_quiz_sec'];
+            sections.forEach(sec => {
+                const btn = document.getElementById('btn-'+sec);
+                if(!btn) return;
+                const lockIcon = btn.querySelector('.fa-lock'), mainIcon = btn.querySelector('.nav-icon');
+                if(unlockedSections.includes(sec) || sec==='home') { btn.classList.remove('locked-section'); if(lockIcon) lockIcon.classList.add('hidden'); if(mainIcon) mainIcon.classList.remove('hidden'); }
+                else { btn.classList.add('locked-section'); if(lockIcon) lockIcon.classList.remove('hidden'); if(mainIcon) mainIcon.classList.add('hidden'); }
+            });
+        }
+        let currentQuiz = null;
+        function openQuiz(sectionId) {
+            currentQuiz = sectionId;
+            const qd = quizzes[sectionId];
+            if(!qd) { console.error("Quiz not found:", sectionId); return; }
+            document.getElementById('quiz-title').innerText = qd.title;
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = '';
+            qd.questions.forEach((q, idx) => {
+                let html = `<div class="bg-slate-50 p-4 rounded-xl border mb-4" id="quiz-q-${idx}">
+                    <p class="font-bold mb-3">${idx+1}. ${q.q}</p>
+                    <div class="space-y-2" data-qidx="${idx}">`;
+                q.options.forEach((opt, oi) => {
+                    html += `<label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer">
+                        <input type="radio" name="q${idx}" value="${oi}" class="form-radio text-typhoid">
+                        <span>${opt}</span>
+                    </label>`;
+                });
+                html += `</div><div class="feedback-${idx} text-sm mt-2 hidden"></div></div>`;
+                container.innerHTML += html;
+            });
+            document.getElementById('quiz-submit-btn').classList.remove('hidden');
+            document.getElementById('quiz-result-container').classList.add('hidden');
+            document.getElementById('quiz-modal').classList.remove('hidden');
+        }
+        function closeQuiz() { document.getElementById('quiz-modal').classList.add('hidden'); }
+        function submitQuiz() {
+            const qd = quizzes[currentQuiz];
+            if(!qd) return;
+            let score = 0;
+            for(let i=0; i<qd.questions.length; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const isCorrect = (selected && parseInt(selected.value) === qd.questions[i].ans);
+                if(isCorrect) score++;
+                const feedbackDiv = document.querySelector(`.feedback-${i}`);
+                if(feedbackDiv) {
+                    feedbackDiv.classList.remove('hidden');
+                    const correctAnswerText = qd.questions[i].options[qd.questions[i].ans];
+                    if(isCorrect) {
+                        feedbackDiv.innerHTML = `<span class="text-green-700"><i class="fa-solid fa-check-circle mr-1"></i> Correct!</span>`;
+                        feedbackDiv.parentElement?.classList.add('quiz-feedback-correct');
+                        feedbackDiv.parentElement?.classList.remove('quiz-feedback-wrong');
+                    } else {
+                        const selectedText = selected ? qd.questions[i].options[parseInt(selected.value)] : "No answer";
+                        feedbackDiv.innerHTML = `<span class="text-red-700"><i class="fa-solid fa-times-circle mr-1"></i> Incorrect. Correct answer: <strong>${correctAnswerText}</strong>. Your answer: ${selectedText}.</span>`;
+                        feedbackDiv.parentElement?.classList.add('quiz-feedback-wrong');
+                        feedbackDiv.parentElement?.classList.remove('quiz-feedback-correct');
+                    }
+                }
+            }
+            const percent = (score/qd.questions.length)*100;
+            const resultDiv = document.getElementById('quiz-result-container');
+            const btn = document.getElementById('quiz-submit-btn');
+            btn.classList.add('hidden');
+            resultDiv.classList.remove('hidden');
+            if(percent >= 75) {
+                if(currentQuiz === 'final_quiz') {
+                    resultDiv.innerHTML = `<div class="text-amber-500 text-6xl mb-4 text-center">🏆</div><h3 class="text-2xl font-black text-center">Excellent!</h3><p class="text-center">Score ${score}/${qd.questions.length} (${percent}%)</p><p class="mt-2 text-center text-green-700">You mastered Typhoid Fever!</p><button onclick="closeQuiz()" class="mt-4 w-full bg-slate-800 text-white py-2 rounded-lg">Close</button>`;
+                    return;
+                }
+                if(qd.next && !unlockedSections.includes(qd.next)) { unlockedSections.push(qd.next); if(qd.next === 'mnemonics') unlockedSections.push('final_quiz_sec'); updateSidebarUI(); }
+                resultDiv.innerHTML = `<div class="text-green-600 text-5xl mb-4 text-center">✓</div><h3 class="text-2xl font-black text-center">Passed!</h3><p class="text-center">Score ${score}/${qd.questions.length} (${percent}%)</p><button onclick="closeQuiz(); showSection('${qd.next}')" class="mt-4 w-full bg-green-600 text-white py-2 rounded-lg">Unlock Next Section</button>`;
+            } else {
+                resultDiv.innerHTML = `<div class="text-red-500 text-5xl mb-4 text-center">✗</div><h3 class="text-2xl font-black text-center">Failed</h3><p class="text-center">Score ${score}/${qd.questions.length} (${percent}%) – need 75%.</p><button onclick="openQuiz('${currentQuiz}')" class="mt-4 w-full bg-slate-600 text-white py-2 rounded-lg">Try Again</button>`;
+            }
+        }
+        function toggleRecallMode() {
+            const active = !document.body.classList.contains('recall-mode');
+            const toggle = document.getElementById('recall-toggle'), knob = document.getElementById('recall-knob');
+            if(active) { document.body.classList.add('recall-mode'); toggle.classList.add('bg-typhoid-dark'); knob.classList.add('translate-x-6'); }
+            else { document.body.classList.remove('recall-mode'); toggle.classList.remove('bg-typhoid-dark'); knob.classList.remove('translate-x-6'); }
+        }
+        function toggleMobileMenu() { const s=document.getElementById('sidebar'); if(s.classList.contains('hidden')) s.classList.remove('hidden','flex','absolute','h-full','z-50'); else s.classList.add('hidden'); }
+        document.addEventListener('DOMContentLoaded', () => { updateSidebarUI(); document.querySelectorAll('.reveal-text').forEach(el => el.addEventListener('click', function(){ if(document.body.classList.contains('recall-mode')) this.classList.toggle('revealed'); })); });
+    </script>
+</body>
+</html>
